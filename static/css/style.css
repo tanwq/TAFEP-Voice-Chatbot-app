@@ -1,0 +1,44 @@
+/* Chat container styles */
+.chat-container {
+    padding: 1rem;
+    margin-bottom: 80px; /* Space for footer */
+}
+
+/* Message styles */
+.chat-message {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+}
+
+.user-message {
+    background-color: #f3f4f6;
+    margin-left: auto;
+    max-width: 80%;
+}
+
+.assistant-message {
+    background-color: #0096db;
+    color: white;
+    max-width: 80%;
+}
+
+/* Footer styles */
+.recorder-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    z-index: 100;
+}
+
+/* Emotion display styles */
+.emotion-display {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: #f9fafb;
+    border-radius: 0.25rem;
+}

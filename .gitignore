@@ -1,4 +1,56 @@
+# Streamlit specific
 .streamlit/secrets.toml
+
+# Project credentials and secrets
+credentials.json
+google_credentials.json
+*_credentials.json
+*.key
+*.pem
+
+# Credentials
+credentials/
+*.json
+
+# Audio files and temporary recordings
+*.wav
+*.mp3
+*.ogg
+*.flac
+temp_audio*
+recorded_audio/
+
+# Debug and session files
+debug_sessions/
+session_recordings/
+chat_history/
+
+# Project logs
+logs/
+debug/
+*.log.*
+logging.txt
+
+# Local development files
+.env
+.env.local
+.env.*.local
+config.local.yaml
+!.env.example
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vs/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

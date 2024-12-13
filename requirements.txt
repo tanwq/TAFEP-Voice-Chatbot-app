@@ -1,1 +1,26 @@
-streamlit
+# Core Streamlit dependencies
+streamlit==1.32.0
+streamlit-float==0.3.2
+audio-recorder-streamlit==0.0.8
+
+# Audio processing
+pyaudio==0.2.14
+soundfile==0.12.1
+numpy==1.26.4
+wave==0.0.2
+
+# AI and ML
+anthropic==0.18.1
+openai==1.12.0
+google-cloud-texttospeech==2.15.0
+
+# WebSocket and networking
+websockets==12.0
+requests==2.31.0
+
+# Environment and configuration
+python-dotenv==1.0.1
+pyyaml==6.0.1
+
+# Logging and utilities
+python-logging==0.4.9.6
