@@ -1,25 +1,23 @@
+# analyzer.py
 import openai
 import anthropic
-import asyncio
 import logging
 import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
+from config import Config
+from typing import List, Dict, Optional
 
 class ConversationAnalyzer:
     def __init__(self):
         """Initialize the conversation analyzer with selected AI model"""
         self.logger = logging.getLogger(__name__)
-        self.ai_provider = os.getenv('AI_MODEL', 'AnthropicAI')  # Default to Anthropic
+        self.ai_provider = Config.AI_MODEL
         
         # Initialize appropriate client based on config
         if self.ai_provider == "OpenAI":
-            openai.api_key = os.getenv('OPENAI_API_KEY')
+            openai.api_key = Config.OPENAI_API_KEY
             self.client = openai.chat.completions
         elif self.ai_provider == "AnthropicAI":
-            self.client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+            self.client = anthropic.Anthropic(api_key=Config.ANTHROPIC_API_KEY)
         else:
             raise ValueError(f"Unsupported AI provider: {self.ai_provider}")
     
@@ -77,7 +75,7 @@ class ConversationAnalyzer:
         </rules>
         """
 
-    async def analyze_user_input(self, user_input, conversation_repository, conversation_state):
+    def analyze_user_input(self, user_input: str, conversation_repository: List, conversation_state: Dict) -> str:
         """
         Analyze user input and determine next action
         
@@ -97,14 +95,14 @@ class ConversationAnalyzer:
                 prompt = self._get_anthropic_prompt(user_input, conversation_repository, conversation_state)
                 
             # Generate response
-            response = await self.generate_ai_response(prompt)
+            response = self.generate_ai_response(prompt)
             return response.strip()
             
         except Exception as e:
             self.logger.error(f"Error analyzing user input: {e}")
             return "Error"
 
-    async def generate_ai_response(self, prompt: str) -> str:
+    def generate_ai_response(self, prompt: str) -> str:
         """
         Generate response using selected AI model
         
@@ -116,58 +114,52 @@ class ConversationAnalyzer:
         """
         try:
             if self.ai_provider == "OpenAI":
-                return await self._generate_openai_response(prompt)
+                return self._generate_openai_response(prompt)
             else:
-                return await self._generate_anthropic_response(prompt)
+                return self._generate_anthropic_response(prompt)
         except Exception as e:
             self.logger.error(f"Error generating AI response: {e}")
             return "Error"
             
-    async def _generate_openai_response(self, prompt: str) -> str:
+    def _generate_openai_response(self, prompt: str) -> str:
         """Generate response using OpenAI"""
         try:
-            response = await asyncio.get_event_loop().run_in_executor(
-                None,
-                lambda: self.client.create(
-                    model="gpt-4",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "You are a professional TAFEP advisor speaking directly to users via voice chat. Use concise, clear language and show empathy."
-                        },
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ]
-                )
+            response = self.client.create(
+                model="gpt-4",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are a professional TAFEP advisor speaking directly to users via voice chat. Use concise, clear language and show empathy."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
             self.logger.error(f"OpenAI error: {e}")
             raise
 
-    async def _generate_anthropic_response(self, prompt: str) -> str:
+    def _generate_anthropic_response(self, prompt: str) -> str:
         """Generate response using Anthropic's Claude"""
         try:
-            response = await asyncio.get_event_loop().run_in_executor(
-                None,
-                lambda: self.client.messages.create(
-                    model="claude-3-opus-20240229",
-                    max_tokens=1024,
-                    system="You are a professional TAFEP advisor speaking directly to users via voice chat. Use concise, clear language and show empathy.",
-                    messages=[{
-                        "role": "user",
-                        "content": prompt
-                    }]
-                )
+            response = self.client.messages.create(
+                model=Config.AI_MODEL_VERSION,
+                max_tokens=1024,
+                system="You are a professional TAFEP advisor speaking directly to users via voice chat. Use concise, clear language and show empathy.",
+                messages=[{
+                    "role": "user",
+                    "content": prompt
+                }]
             )
             return response.content[0].text
         except Exception as e:
             self.logger.error(f"Anthropic error: {e}")
             raise
 
-    async def analyze_emotion(self, emotions: list) -> str:
+    def analyze_emotion(self, emotions: List[tuple]) -> str:
         """
         Analyze detected emotions and generate appropriate response modifier
         
@@ -195,7 +187,7 @@ class ConversationAnalyzer:
             </task>
             """
             
-            response = await self.generate_ai_response(emotion_prompt)
+            response = self.generate_ai_response(emotion_prompt)
             return response.strip()
             
         except Exception as e:

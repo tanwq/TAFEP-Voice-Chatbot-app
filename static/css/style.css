@@ -1,7 +1,19 @@
+/* Base layout styles */
+.main {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 /* Chat container styles */
 .chat-container {
     padding: 1rem;
-    margin-bottom: 80px; /* Space for footer */
+    margin-bottom: 80px;  /* Space for footer */
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Message styles */
@@ -9,18 +21,72 @@
     padding: 1rem;
     margin: 0.5rem 0;
     border-radius: 0.5rem;
+    max-width: 80%;
+    position: relative;
 }
 
 .user-message {
     background-color: #f3f4f6;
     margin-left: auto;
-    max-width: 80%;
+    color: #1f2937;
 }
 
 .assistant-message {
     background-color: #0096db;
     color: white;
-    max-width: 80%;
+}
+
+/* Message timestamp */
+.message-timestamp {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    text-align: right;
+}
+
+/* Emotion display styles */
+.emotion-expander {
+    margin-top: 0.5rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.emotion-header {
+    padding: 0.5rem;
+    background: #f9fafb;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.emotion-content {
+    padding: 0.5rem;
+}
+
+.emotion-bar {
+    margin: 0.5rem 0;
+}
+
+.emotion-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+/* Progress bar customization */
+.stProgress > div > div {
+    height: 0.5rem !important;
+    background-color: #e5e7eb !important;
+}
+
+.stProgress > div > div > div {
+    background-color: #0096db !important;
 }
 
 /* Footer styles */
@@ -33,12 +99,125 @@
     background: white;
     border-top: 1px solid #e5e7eb;
     z-index: 100;
+    display: flex;
+    align-items: center;
 }
 
-/* Emotion display styles */
-.emotion-display {
+/* Audio recorder button styles */
+.audio-recorder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background-color: #0096db;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.audio-recorder:hover {
+    background-color: #0077b6;
+}
+
+.audio-recorder.recording {
+    background-color: #e21e1e;
+    animation: pulse 2s infinite;
+}
+
+/* Processing spinner */
+.processing-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    color: #6b7280;
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(226, 30, 30, 0.4);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(226, 30, 30, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(226, 30, 30, 0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chat-message {
+        max-width: 90%;
+    }
+    
+    .recorder-footer {
+        padding: 0.75rem;
+    }
+}
+
+/* Error message styling */
+.streamlit-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin: 0.5rem 0;
+    border: 1px solid #f87171;
+}
+
+/* Loading state styles */
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: #6b7280;
+}
+
+/* Streamlit component overrides */
+.stButton>button {
+    width: 100%;
+}
+
+.stSpinner {
+    text-align: center;
+    color: #6b7280;
+}
+
+/* Emotion metrics display */
+.emotion-metrics {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
     margin-top: 0.5rem;
+}
+
+.emotion-metric {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
     padding: 0.5rem;
     background: #f9fafb;
     border-radius: 0.25rem;
+    border: 1px solid #e5e7eb;
+}
+
+.emotion-metric-label {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 0.25rem;
+}
+
+.emotion-metric-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
 }

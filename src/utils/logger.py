@@ -1,3 +1,4 @@
+# logger.py
 import logging
 from datetime import datetime
 import os
@@ -21,6 +22,13 @@ def setup_logging():
         "%(levelname)s - %(message)s"
     )
     
+    # Get root logger
+    root_logger = logging.getLogger()
+    
+    # Remove any existing handlers to prevent duplicates
+    while root_logger.handlers:
+        root_logger.removeHandler(root_logger.handlers[0])
+    
     # Set up file handler
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(file_formatter)
@@ -32,7 +40,6 @@ def setup_logging():
     console_handler.setLevel(logging.INFO)  # Less verbose for console
     
     # Configure root logger
-    root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)  # Capture all levels
     root_logger.addHandler(file_handler)
     root_logger.addHandler(console_handler)
